@@ -1,0 +1,89 @@
+---------------Prerequisites---------------
+
+The first step is to make sure that you have a Java Development Kit (JDK) installed. The reason for installing this is because Spark is written in Scala and runs on Java Virtual Machine (JVM).
+
+
+---------------Downloading pyspark with pip------------
+
+- You can easily install PySpark with pip: 
+    
+    $ pip install pyspark
+
+- Alternatively, you can go to Spark's download page:
+
+    https://spark.apache.org/downloads.html
+    
+Keep the default settings in the first 3 steps and download Spark on the fourth step.
+
+- You should see an untar folder in your downloads, Untar the foldereither by clicking on it or using the command:
+
+    $ tar xvf spark-2.2.0-bin-hadoop2.7.tgz
+
+- Move this untarred folder to /usr/local/spark. You can use this command to move it:
+
+    $ mv spark-2.1.0-bin-hadoop2.7 /usr/local/spark 
+    
+- If permission is denied, use sudo:
+
+    $ sudo mv spark-2.1.0-bin-hadoop2.7 /usr/local/spark
+
+- Open the README file in /usr/local/spark. You first need to navigate to the location where the file is:
+
+    $ cd /usr/local/spark
+    
+- You can open the README file using either:
+
+    $ nano README.md
+    
+which opens the file for editing or you can just read the file using:
+
+    $ cat README.md
+
+
+You’ll see that you’ll need to run a command to build Spark if you have a version that has not been built yet. So, make sure you run the command:
+
+    $ build/mvn -DskipTests clean package run
+ 
+This might take a while, but after this, you’re all set.
+
+
+
+-----------Spark in Jupyter Notebook------------------------
+
+- Now that you have all that you need to get started, you can launch the Jupyter Notebook Application by typing the following:
+
+    PYSPARK_DRIVER_PYTHON="jupyter" PYSPARK_DRIVER_PYTHON_OPTS="notebook" pyspark
+
+- Or you can launch Jupyter Notebook normally with jupyter notebook and run the following code before importing PySpark:
+
+    pip install findspark 
+
+- With findspark, you can add pyspark to sys.path at runtime. Next, you can just import pyspark just like any other regular library:
+
+    import findspark
+    findspark.init()
+
+    # Or the following command
+    findspark.init("/path/to/spark_home")
+
+    from pyspark import SparkContext, SparkConf
+    
+    
+
+------------Jupyter Notebook with Spark Kernel------------------
+
+- Next, if you want to install a kernel, you want to make sure you get Apache Toree installed. Install Toree via pip with:
+    
+    pip install toree 
+
+- Next, install a jupyter application toree:
+
+    jupyter toree install --spark_home=/usr/local/bin/apache-spark/ --interpreters=Scala,PySpark
+
+Make sure that you fill out the spark_home argument correctly and also note that if you don’t specify PySpark in the interpreters argument, that the Scala kernel will be installed by default. This path should point to the unzipped directory that you have downloaded earlier from the Spark download page. Next, verify whether the kernel is included in the following list:
+
+    jupyter kernelspec list
+    
+Start Jupyter notebook as usual with jupyter notebook or configure Spark even further with, for example, the following line:
+
+    SPARK_OPTS='--master=local[4]' jupyter notebook 
